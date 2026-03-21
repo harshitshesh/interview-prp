@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import useDebounce from '../hooks/useDebounce'
 
 const Fetchdata = () => {
 
@@ -6,7 +7,9 @@ const Fetchdata = () => {
     const [posts, setposts] = useState([])
     const [loading, setload] = useState(true)
     const [error, seterr] = useState(null)
+    const [val,setval] =  useState("")
 
+    const debouncing = useDebounce(val,500)
     async function alldata() {
         try {
 
@@ -40,6 +43,9 @@ const Fetchdata = () => {
         user: usermap[p.userId]
     }))
 
+    let filterdata = mergealldata.filter((f)=>(
+        (f.title.toLowerCase().includes(debouncing.toLowerCase()) || f.user.name.toLowerCase().includes(debouncing.toLowerCase()))
+    ))
     if (loading) return <div>Loading...</div>
 
 
@@ -48,11 +54,11 @@ const Fetchdata = () => {
 
     return (
         <div>
+<input onChange={(e)=>setval(e.target.value)} type="text" value={val} placeholder='enter your post title or author name..' />
 
-
-      {mergealldata.map((item)=>(
-          <div className="container">
-  {mergealldata.map((item) => (
+<div className="container">
+      {filterdata.map((item)=>(
+  
     <div className="card" key={item.id}>
       <h2 className="title">{item.title}</h2>
       <p className="body">{item.body}</p>
@@ -62,10 +68,10 @@ const Fetchdata = () => {
         <span>{item.user.email}</span>
       </div>
     </div>
-  ))}
+
+)
+)}
 </div>
-      )
-      )}
 
         </div>
     )
