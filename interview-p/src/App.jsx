@@ -1,10 +1,11 @@
 import React from 'react'
-import Fetchdata from './components/Fetchdata'
+import Dashboard from './components/Dashboard'
 
 const App = () => {
   return (
-    <div>
-      <Fetchdata/>
+    <div style={{ display: 'flex', width: '100%', minHeight: '100vh' }}>
+    <Dashboard/>
+
     </div>
   )
 }
